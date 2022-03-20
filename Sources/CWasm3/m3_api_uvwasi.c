@@ -12,6 +12,8 @@
 #include "m3_env.h"
 #include "m3_exception.h"
 
+#include "ios_error.h"
+
 #if defined(d_m3HasUVWASI)
 
 #include <stdio.h>
@@ -951,7 +953,11 @@ M3Result  m3_LinkWASI  (IM3Module module)
     init_options.envp = (const char **) env;
     init_options.preopenc = PREOPENS_COUNT;
     init_options.preopens = preopens;
-
+    
+    init_options.in  = thread_stdin;
+    init_options.out = thread_stdout;
+    init_options.err = thread_stderr;
+    
     if (!wasi_context) {
         wasi_context = (m3_wasi_context_t*)malloc(sizeof(m3_wasi_context_t));
         wasi_context->exit_code = 0;
