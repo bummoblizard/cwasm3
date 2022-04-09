@@ -11,6 +11,7 @@
 
 #include "m3_env.h"
 #include "m3_exception.h"
+#include "ios_error.h"
 
 #include <time.h>
 #include <errno.h>
@@ -70,8 +71,8 @@ m3ApiRawFunction(m3_libc_print)
 
     m3ApiCheckMem(i_ptr, i_size);
 
-    fwrite(i_ptr, i_size, 1, stdout);
-    fflush(stdout);
+    fwrite(i_ptr, i_size, 1, thread_stdout);
+    fflush(thread_stdout);
 
     m3ApiReturn(i_size);
 }
@@ -119,7 +120,7 @@ m3ApiRawFunction(m3_libc_printf)
     size_t fmt_len = strnlen(i_fmt, 1024);
     m3ApiCheckMem(i_fmt, fmt_len+1); // include `\0`
 
-    FILE* file = stdout;
+    FILE* file = thread_stdout;
 
     int32_t length = 0;
     char ch;
